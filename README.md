@@ -13,8 +13,8 @@
   - [x] API Key create, delete function
   - [ ] API Key loading on startup
 - [ ] API endpoints(router)
-  - [ ] Implement `/giphy` endpoint
-  - [ ] Implement `/api-key` POST to create API key
-  - [ ] Implement `/api-key` DELETE to delete API key
+  - [] Implement `/giphy` endpoint
+  - [x] Implement `/api-key` POST to create API key
+  - [x] Implement `/api-key` DELETE to delete API key
   - [ ] Write a middleware for API-key in those routes
 - [ ] Containerize the application using Docker
