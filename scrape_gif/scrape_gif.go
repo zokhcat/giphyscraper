@@ -102,7 +102,6 @@ func writeJSONOutput(JSONoutputFilename string, results []GiphyResult) {
 }
 
 func writeXMLOutput(XMLoutputFileName string, results []GiphyResult) {
-	// Wrap the results in the GiphyResults struct
 	giphyResults := GiphyResults{Results: results}
 
 	xmlData, err := xml.MarshalIndent(giphyResults, "", "  ")
@@ -110,7 +109,6 @@ func writeXMLOutput(XMLoutputFileName string, results []GiphyResult) {
 		log.Fatalf("Error creating XML: %v\n", err)
 	}
 
-	// Add XML header
 	xmlData = []byte(xml.Header + string(xmlData))
 
 	err = os.WriteFile(XMLoutputFileName, xmlData, 0644)

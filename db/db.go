@@ -5,37 +5,21 @@ import (
 	"gorm.io/gorm"
 )
 
+var A_DB *gorm.DB
+
 type APIKey struct {
-	ID  uint   `gorm:"primaryKey;default:auto_random()"`
+	gorm.Model
 	Key string `gorm:"unique;not null"`
 }
 
-func InitDB() *gorm.DB {
+func InitDB() {
 	api_db, err := gorm.Open(sqlite.Open("api_keys.db"), &gorm.Config{})
 
 	if err != nil {
 		panic("failed to connect database")
 	}
 
-	api_db.AutoMigrate(&APIKey{})
+	A_DB = api_db
 
-	return api_db
-}
-
-func CreateAPIKey(api_db *gorm.DB, apikey APIKey) error {
-	result := api_db.Create(&apikey)
-	return result.Error
-}
-
-func DeleteAPIKey(api_db *gorm.DB, userID uint) error {
-	result := api_db.Where("user_id = ?", userID).Delete(&APIKey{})
-	if result.Error != nil {
-		return result.Error
-	}
-
-	if result.RowsAffected == 0 {
-		return gorm.ErrRecordNotFound
-	}
-
-	return nil
+	A_DB.AutoMigrate(&APIKey{})
 }
