@@ -2,15 +2,15 @@
 - [x] Giphy API integration
   - [x] Setup Giphy API client
   - [x] Function to fetch GIFs and parse Giphy API response
-- [ ] Response Formatting
+- [x] Response Formatting
   - [x] Implement JSON formatting
   - [x] Implement XML formatting
   - [x] Research and implement Protobuf formatting
 ### - [ ] Microservice
 - [ ] API Key Management
-  - [ ] Implement SQLite db
-  - [ ] Create DB model
-  - [ ] API Key create, delete function
+  - [x] Implement SQLite db
+  - [x] Create DB model
+  - [x] API Key create, delete function
   - [ ] API Key loading on startup
 - [ ] API endpoints(router)
   - [ ] Implement `/giphy` endpoint
