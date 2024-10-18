@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package giphy;
+
+option go_package = "giphyscraper/giphy_proto";
+
+message GiphyResult {
+    string id = 1;
+    string url = 2;
+    string username = 3;
+    string title = 4;
+}
+
+message GiphyResults {
+    repeated GiphyResult results = 1;
+}

@@ -4,12 +4,14 @@ import (
 	"encoding/json"
 	"encoding/xml"
 	"fmt"
+	"giphyscraper/giphy_proto"
 	"io"
 	"log"
 	"net/http"
 	"os"
 
 	"github.com/joho/godotenv"
+	"google.golang.org/protobuf/proto"
 )
 
 type GiphyResult struct {
@@ -27,9 +29,9 @@ type GiphyResults struct {
 func Scrape() {
 	searchTerm := "cats"
 	limit := 25
-	JSONoutputFileName := "giphy_results.json"
-	XMLoutputFileName := "giphy_results.xml"
-	// ProtoBufoutputFileName := "giphy_results.pb"
+	JSONoutputFileName := "./out/giphy_results.json"
+	XMLoutputFileName := "./out/giphy_results.xml"
+	ProtoBufoutputFileName := "./out/giphy_results.pb"
 
 	err := godotenv.Load()
 	if err != nil {
@@ -83,6 +85,8 @@ func Scrape() {
 
 	writeXMLOutput(XMLoutputFileName, prettifiedResults)
 
+	writeProtobufOutput(ProtoBufoutputFileName, prettifiedResults)
+
 }
 
 func writeJSONOutput(JSONoutputFilename string, results []GiphyResult) {
@@ -115,7 +119,28 @@ func writeXMLOutput(XMLoutputFileName string, results []GiphyResult) {
 	}
 }
 
-func writeProtobufOutput(writeProtobufOutput string, results []GiphyResult) {
+func writeProtobufOutput(ProtoBufoutputFileName string, results []GiphyResult) {
+	giphyResults := &giphy_proto.GiphyResults{
+		Results: make([]*giphy_proto.GiphyResult, len(results))}
+
+	for i, result := range results {
+		giphyResults.Results[i] = &giphy_proto.GiphyResult{
+			Id:       result.ID,
+			Url:      result.URL,
+			Username: result.Username,
+			Title:    result.Title,
+		}
+	}
+
+	out, err := proto.Marshal(giphyResults)
+	if err != nil {
+		log.Fatalf("Failed to marshal protobuf: %v", err)
+	}
+
+	err = os.WriteFile(ProtoBufoutputFileName, out, 0644)
+	if err != nil {
+		log.Fatalf("Failed to write protobuf to file: %v", err)
+	}
 
 }
 

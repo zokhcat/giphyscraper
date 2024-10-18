@@ -5,7 +5,7 @@
 - [ ] Response Formatting
   - [x] Implement JSON formatting
   - [x] Implement XML formatting
-  - [ ] Research and implement Protobuf formatting
+  - [x] Research and implement Protobuf formatting
 ### - [ ] Microservice
 - [ ] API Key Management
   - [ ] Implement SQLite db
