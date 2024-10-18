@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"google.golang.org/protobuf/proto"
 )
@@ -26,8 +27,9 @@ type GiphyResults struct {
 	Results []GiphyResult `xml:"giphyImages"`
 }
 
-func Scrape() {
-	searchTerm := "cats"
+func Scrape(c *gin.Context) {
+	searchTerm := c.Query("q")
+	outPref := c.Query("o")
 	limit := 25
 	JSONoutputFileName := "./out/giphy_results.json"
 	XMLoutputFileName := "./out/giphy_results.xml"
@@ -81,11 +83,15 @@ func Scrape() {
 		})
 	}
 
-	writeJSONOutput(JSONoutputFileName, prettifiedResults)
+	if outPref == "json" {
+		writeJSONOutput(JSONoutputFileName, prettifiedResults)
+	} else if outPref == "xml" {
+		writeXMLOutput(XMLoutputFileName, prettifiedResults)
+	} else if outPref == "protobuf" {
+		writeProtobufOutput(ProtoBufoutputFileName, prettifiedResults)
+	}
 
-	writeXMLOutput(XMLoutputFileName, prettifiedResults)
-
-	writeProtobufOutput(ProtoBufoutputFileName, prettifiedResults)
+	c.JSON(200, gin.H{"message": "Wrote File"})
 
 }
 

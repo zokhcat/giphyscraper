@@ -43,6 +43,10 @@ func DeleteAPIKey(c *gin.Context) {
 	c.JSON(200, gin.H{"message": "API key deleted"})
 }
 
+func GetMessage(c *gin.Context) {
+	c.JSON(200, gin.H{"message": "Hello"})
+}
+
 func generateRandomKey(length int) string {
 	const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 	rand.Seed(uint64(time.Now().UnixNano()))

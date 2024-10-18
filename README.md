@@ -6,15 +6,14 @@
   - [x] Implement JSON formatting
   - [x] Implement XML formatting
   - [x] Research and implement Protobuf formatting
-### - [ ] Microservice
-- [ ] API Key Management
+### - [x] Microservice
+- [x] API Key Management
   - [x] Implement SQLite db
   - [x] Create DB model
   - [x] API Key create, delete function
-  - [ ] API Key loading on startup
-- [ ] API endpoints(router)
-  - [] Implement `/giphy` endpoint
+- [x] API endpoints(router)
+  - [x] Implement `/giphy` endpoint
   - [x] Implement `/api-key` POST to create API key
   - [x] Implement `/api-key` DELETE to delete API key
-  - [ ] Write a middleware for API-key in those routes
+  - [x] Write a middleware for API-key in those routes
 - [ ] Containerize the application using Docker
