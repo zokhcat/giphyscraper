@@ -1,0 +1,17 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./api_keys.db:/root/api_keys.db
+      - ./out:/root/out
+    environment:
+      - DATABASE_URL=file:./api_keys.db
+    env_file:
+      - .env
+
+volumes:
+  db_data:
