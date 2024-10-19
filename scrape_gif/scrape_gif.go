@@ -1,6 +1,7 @@
 package scrape_gif
 
 import (
+	"context"
 	"encoding/json"
 	"encoding/xml"
 	"fmt"
@@ -9,11 +10,21 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+	"github.com/redis/go-redis/v9"
 	"google.golang.org/protobuf/proto"
 )
+
+var ctx = context.Background()
+
+var rdb = redis.NewClient(&redis.Options{
+	Addr:     "localhost:6379",
+	Password: "",
+	DB:       0,
+})
 
 type GiphyResult struct {
 	ID       string `json:"id"`
@@ -31,11 +42,20 @@ func Scrape(c *gin.Context) {
 	searchTerm := c.Query("q")
 	outPref := c.Query("o")
 	limit := 25
-	JSONoutputFileName := "./out/giphy_results.json"
-	XMLoutputFileName := "./out/giphy_results.xml"
-	ProtoBufoutputFileName := "./out/giphy_results.pb"
 
-	err := godotenv.Load()
+	cacheKey := "giphy:" + searchTerm
+
+	cachedData, err := rdb.Get(ctx, cacheKey).Result()
+	if err == nil {
+		log.Println("Cache hit! Returning cached data.")
+		var cachedResults []GiphyResult
+		if err := json.Unmarshal([]byte(cachedData), &cachedResults); err == nil {
+			sendResponse(c, cachedResults, outPref)
+			return
+		}
+	}
+
+	err = godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
@@ -82,17 +102,29 @@ func Scrape(c *gin.Context) {
 			Title:    getStringValue(gif, "title"),
 		})
 	}
+	cacheData, _ := json.Marshal(prettifiedResults)
+	rdb.Set(ctx, cacheKey, cacheData, 10*time.Minute)
+
+	sendResponse(c, prettifiedResults, outPref)
+}
+
+func sendResponse(c *gin.Context, results []GiphyResult, outPref string) {
+	JSONoutputFileName := "./out/giphy_results.json"
+	XMLoutputFileName := "./out/giphy_results.xml"
+	ProtoBufoutputFileName := "./out/giphy_results.pb"
 
 	if outPref == "json" {
-		writeJSONOutput(JSONoutputFileName, prettifiedResults)
+		writeJSONOutput(JSONoutputFileName, results)
+		c.JSON(200, gin.H{"message": "Wrote JSON file"})
 	} else if outPref == "xml" {
-		writeXMLOutput(XMLoutputFileName, prettifiedResults)
+		writeXMLOutput(XMLoutputFileName, results)
+		c.JSON(200, gin.H{"message": "Wrote XML file"})
 	} else if outPref == "protobuf" {
-		writeProtobufOutput(ProtoBufoutputFileName, prettifiedResults)
+		writeProtobufOutput(ProtoBufoutputFileName, results)
+		c.JSON(200, gin.H{"message": "Wrote Protobuf file"})
+	} else {
+		c.JSON(400, gin.H{"error": "Invalid output preference"})
 	}
-
-	c.JSON(200, gin.H{"message": "Wrote File"})
-
 }
 
 func writeJSONOutput(JSONoutputFilename string, results []GiphyResult) {
