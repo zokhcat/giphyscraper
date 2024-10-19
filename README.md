@@ -10,7 +10,7 @@
 - **Authentication**: API key-based authentication using middleware.
 - **Caching**: Caching using `redis` for a faster response time when querying the same thing.
 <img src="https://i.postimg.cc/K4XrK0Zq/241019-22h43m51s-screenshot.png" alt="caching response time">
-_first request is before getting cached and second request is after getting cached and the significant improvement in response time_
+*first request is before getting cached and second request is after getting cached and the significant improvement in response time*
 <br>
 - **Containerization**: Docker support with Docker Compose for easy setup.
 
@@ -47,15 +47,16 @@ _first request is before getting cached and second request is after getting cach
 
 2. **Configure Giphy API Key**
 
-  #### Add your Giphy API key to .env file:
-
-```
-GIPHY_API_KEY=<your-api-key>
-```
-  #### Run the service locally
+  - #### Add your Giphy API key to .env file:
 
 ```bash
-    docker compose up
+   GIPHY_API_KEY=<your-api-key>
+```
+
+  - #### Run the service locally
+
+```bash
+   docker compose up
 ```
 
 ### Access the API
