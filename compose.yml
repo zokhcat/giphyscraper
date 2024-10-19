@@ -10,8 +10,20 @@ services:
       - ./out:/root/out
     environment:
       - DATABASE_URL=file:./api_keys.db
+      - REDIS_ADDR=redis:6379
     env_file:
       - .env
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
 
 volumes:
   db_data:
+  redis_data:

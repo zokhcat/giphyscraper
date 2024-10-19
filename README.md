@@ -9,9 +9,9 @@
   - `/api-key` (POST/DELETE): Manage API keys.  
 - **Authentication**: API key-based authentication using middleware.
 - **Caching**: Caching using `redis` for a faster response time when querying the same thing.
-<br>
-<img src="https://i.postimg.cc/63dQWTGs/241019-22h29m00s-screenshot.png" alt="caching response time">
+<img src="https://i.postimg.cc/K4XrK0Zq/241019-22h43m51s-screenshot.png" alt="caching response time">
 _first request is before getting cached and second request is after getting cached and the significant improvement in response time_
+<br>
 - **Containerization**: Docker support with Docker Compose for easy setup.
 
 ---
