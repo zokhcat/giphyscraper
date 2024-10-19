@@ -47,17 +47,17 @@ _first request is before getting cached and second request is after getting cach
 
 2. **Configure Giphy API Key**
 
-    Add your Giphy API key to .env file:
+  #### Add your Giphy API key to .env file:
 
-```bash
-    GIPHY_API_KEY=<your-api-key>
 ```
-
-    Run the Service Locally
+GIPHY_API_KEY=<your-api-key>
+```
+  #### Run the service locally
 
 ```bash
     docker compose up
 ```
+
 ### Access the API
   Service will be available at http://localhost:8080.
 
