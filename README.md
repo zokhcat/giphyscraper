@@ -16,4 +16,4 @@
   - [x] Implement `/api-key` POST to create API key
   - [x] Implement `/api-key` DELETE to delete API key
   - [x] Write a middleware for API-key in those routes
-- [ ] Containerize the application using Docker
+- [x] Containerize the application using Docker
