@@ -52,6 +52,7 @@ _first request is before getting cached and second request is after getting cach
 ```bash
     GIPHY_API_KEY=<your-api-key>
 ```
+
     Run the Service Locally
 
 ```bash
